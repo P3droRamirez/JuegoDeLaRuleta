@@ -8,25 +8,16 @@ public class PrimeraVersionRuleta {
 
     public static void main(String[] args) {
         Random random = new Random();
-        Scanner sc = new Scanner(System.in);
 
         int numerosTotalesRuleta = 37;
-        int saldo = 0;
 
         boolean seguirJugando = true;
 
         while (seguirJugando) {
-            int numJugadores = 0;
+            int numJugadores = obtenerNumeroJugadores();
 
-             String numJugadoresStr = JOptionPane.showInputDialog("Hola, ¿cuántos jugadores vienen a jugar?");
-        try {
-            numJugadores = Integer.parseInt(numJugadoresStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido de jugadores.");
-            System.exit(0);
-        }
             if (numJugadores <= 0 || numJugadores > 8) {
-                 JOptionPane.showMessageDialog(null, "El programa se va a cerrar. Debe elegir un número positivo de jugadores.");
+                JOptionPane.showMessageDialog(null, "El programa se va a cerrar. Debe elegir un número positivo de jugadores.");
                 break;
             } else {
                 String[] nombres = new String[numJugadores];
@@ -35,18 +26,10 @@ public class PrimeraVersionRuleta {
 
                 // Pedir información de cada jugador
                 for (int i = 0; i < numJugadores; i++) {
-                nombres[i] = JOptionPane.showInputDialog("Introduzca el nombre del jugador " + (i + 1) + ":");
-                String creditos2 = JOptionPane.showInputDialog("Introduzca el crédito del jugador " + (i + 1) + ":");
-                String numApostado2 = JOptionPane.showInputDialog("Introduzca el número apostado por el jugador " + (i + 1) + ":");
-
-                try {
-                    creditos[i] = Integer.parseInt(creditos2);
-                    numApostado[i] = Integer.parseInt(numApostado2);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Por favor, ingrese números válidos para créditos y número apostado.");
-                    System.exit(0);
+                    nombres[i] = obtenerInput("Introduzca el nombre del jugador " + (i + 1) + ":");
+                    creditos[i] = obtenerEnteroInput("Introduzca el crédito del jugador " + (i + 1) + ":");
+                    numApostado[i] = obtenerEnteroInput("Introduzca el número apostado por el jugador " + (i + 1) + ":");
                 }
-            }
 
                 int numeroRuleta = girarRuleta(numerosTotalesRuleta);
 
@@ -56,17 +39,15 @@ public class PrimeraVersionRuleta {
             }
 
             // Preguntar al usuario si quiere seguir jugando
-            System.out.println("¿Quieres seguir jugando? (1: Sí / 0: No)");
-            int respuesta = sc.nextInt();
+            int respuesta = obtenerEnteroInput("¿Quieres seguir jugando? (1: Sí / 0: No)");
 
             if (respuesta == 0) {
                 seguirJugando = false;
                 System.out.println("Gracias por jugar. ¡Hasta luego!");
-                
             }
-            
         }
-         int[] numerosRuleta = new int[numerosTotalesRuleta];
+
+        int[] numerosRuleta = new int[numerosTotalesRuleta];
 
         for (int j = 0; j < numerosRuleta.length; j++) {
             numerosRuleta[j] = j;
@@ -74,8 +55,60 @@ public class PrimeraVersionRuleta {
 
         // Mostrar los números de la ruleta
         JOptionPane.showMessageDialog(null, "Números de la ruleta: " + java.util.Arrays.toString(numerosRuleta));
+    }
 
-        sc.close();
+    public static int obtenerNumeroJugadores() {
+        int numJugadores = 0;
+        boolean entradaValida = false;
+
+        while (!entradaValida) {
+            String numJugadoresStr = JOptionPane.showInputDialog("Hola, ¿cuántos jugadores vienen a jugar?");
+
+            if (esNumeroEntero(numJugadoresStr)) {
+                numJugadores = Integer.parseInt(numJugadoresStr);
+
+                if (numJugadores > 0 && numJugadores <= 8) {
+                    entradaValida = true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Debe elegir un número positivo de jugadores (hasta 8).");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido de jugadores.");
+            }
+        }
+
+        return numJugadores;
+    }
+
+    public static boolean esNumeroEntero(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static String obtenerInput(String mensaje) {
+        return JOptionPane.showInputDialog(mensaje);
+    }
+
+    public static int obtenerEnteroInput(String mensaje) {
+        int resultado = 0;
+        boolean entradaValida = false;
+
+        while (!entradaValida) {
+            String input = obtenerInput(mensaje);
+
+            if (esNumeroEntero(input)) {
+                resultado = Integer.parseInt(input);
+                entradaValida = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido.");
+            }
+        }
+
+        return resultado;
     }
 
     public static int girarRuleta(int numerosTotalesRuleta) {
