@@ -18,8 +18,9 @@ Se evalúa si cada jugador ha ganado o perdido, y se ajustan los créditos en co
 Después de una ronda, se pregunta a los jugadores si desean seguir jugando.(1: Sí / 0: No)")
 
 - Requisitos del Sistema
-Java JDK 8 o superior.
--Colaboradores:
+Java JDK 8 o superior
+
+#Colaboradores:
 - Manuel Santos
 - Pablo Forero
 - Pedro Ramirez
