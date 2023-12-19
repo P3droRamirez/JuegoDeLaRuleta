@@ -1,13 +1,11 @@
 package primeraversionruleta;
 
 import java.util.Random;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class PrimeraVersionRuleta {
 
     public static void main(String[] args) {
-        Random random = new Random();
 
         int numerosTotalesRuleta = 37;
 
@@ -22,19 +20,27 @@ public class PrimeraVersionRuleta {
             } else {
                 String[] nombres = new String[numJugadores];
                 int[] creditos = new int[numJugadores];
-                int[] numApostado = new int[numJugadores];
+                int[] cantidadesApostadas = new int[numJugadores];
+                int[][] numerosApostados = new int[numJugadores][];
 
                 // Pedir información de cada jugador
                 for (int i = 0; i < numJugadores; i++) {
                     nombres[i] = obtenerInput("Introduzca el nombre del jugador " + (i + 1) + ":");
                     creditos[i] = obtenerEnteroInput("Introduzca el crédito del jugador " + (i + 1) + ":");
-                    numApostado[i] = obtenerEnteroInput("Introduzca el número apostado por el jugador " + (i + 1) + ":");
+                    cantidadesApostadas[i] = obtenerEnteroInput("Introduzca la cantidad de números a los que desea apostar el jugador " + (i + 1) + ":");
+
+                    // Crear un nuevo arreglo para almacenar los números apostados por el jugador
+                    numerosApostados[i] = new int[cantidadesApostadas[i]];
+
+                    for (int j = 0; j < cantidadesApostadas[i]; j++) {
+                        numerosApostados[i][j] = obtenerEnteroInput("Introduzca el número apostado por el jugador " + (i + 1) + " (apuesta " + (j + 1) + "):");
+                    }
                 }
 
                 int numeroRuleta = girarRuleta(numerosTotalesRuleta);
 
                 for (int i = 0; i < numJugadores; i++) {
-                    Jugador(nombres[i], creditos[i], numApostado[i], numeroRuleta);
+                    Jugador(nombres[i], creditos[i], cantidadesApostadas[i], numerosApostados[i], numeroRuleta);
                 }
             }
 
@@ -116,19 +122,27 @@ public class PrimeraVersionRuleta {
         return random.nextInt(numerosTotalesRuleta);
     }
 
-    public static void Jugador(String nombre, int creditos, int numApostado, int numeroRuleta) {
+    public static void Jugador(String nombre, int creditos, int cantidadesApostadas, int[] numerosApostados, int numeroRuleta) {
         System.out.println("Hola, soy el jugador " + nombre + ". Mi crédito es: " + creditos
-                + " y aposté por el número " + numApostado + ". El número en la ruleta es: " + numeroRuleta);
+                + " y aposté por " + cantidadesApostadas + " número(s): " + java.util.Arrays.toString(numerosApostados) + ". El número en la ruleta es: " + numeroRuleta);
 
-        // Comparar el número apostado con el resultado de la ruleta
-        if (numApostado == numeroRuleta) {
+        // Comparar los números apostados con el resultado de la ruleta
+        boolean gano = false;
+        for (int k = 0; k < numerosApostados.length; k++) {
+            if (numerosApostados[k] == numeroRuleta) {
+                gano = true;
+                break;
+            }
+        }
+
+        if (gano) {
             System.out.println("¡Felicidades! Has ganado.");
-            // Ganas 36 veces la apuesta
-            creditos = creditos + 36;
+            // Ganas 36 veces la apuesta por cada número
+            creditos = creditos + (36 * cantidadesApostadas);
         } else {
             System.out.println("Lo siento, no has ganado esta vez.");
-            // Pierdes 1 crédito
-            creditos = creditos - 1;
+            // Pierdes 1 crédito por cada número apostado
+            creditos = creditos - cantidadesApostadas;
         }
         System.out.println("Tu nuevo saldo es: " + creditos);
         System.out.println("--------");
