@@ -30,7 +30,7 @@ public class PrimeraVersionRuleta {
         
     }
 
-
+    //metodo para el modo de juego por números
     public static void apuestasPorNumeros(){
         int numerosTotalesRuleta = 37;
 
@@ -65,7 +65,7 @@ public class PrimeraVersionRuleta {
                 int numeroRuleta = girarRuleta(numerosTotalesRuleta);
 
                 for (int i = 0; i < numJugadores; i++) {
-                    Jugador(nombres[i], creditos[i], cantidadesApostadas[i], numerosApostados[i], numeroRuleta);
+                    comprobacionPorNumeros(nombres[i], creditos[i], cantidadesApostadas[i], numerosApostados[i], numeroRuleta);
                 }
             }
 
@@ -85,7 +85,7 @@ public class PrimeraVersionRuleta {
         }
         
     }
-
+    //metodo para el modo de juego por colores
     public static void apuestasPorColor(){
         int respuestaColor = 0;
         
@@ -124,7 +124,7 @@ public class PrimeraVersionRuleta {
             }
         }
     }
-
+    //metodo para el modo de juego por tipo de numero
     public static void apuestaTipoNumero(){
         int respuestaTipoNumero = 0;
         
@@ -164,13 +164,47 @@ public class PrimeraVersionRuleta {
         }
 
     }
-
+    //metodo para el modo de juego por sectores
     public static void apuestaPorSector(){
-        int numerosTotalesRuleta = 37;
-        int numeroRuleta = girarRuleta(numerosTotalesRuleta);
+        int respuestaSector = 0;
+        
+
+        boolean seguirJugando = true;
+
+        while (seguirJugando) {
+            int numJugadores = obtenerNumeroJugadores();
+
+            if (numJugadores <= 0 || numJugadores > 8) {
+                JOptionPane.showMessageDialog(null, "El programa se va a cerrar. Debe elegir un número positivo de jugadores.");
+                break;
+            } else {
+                String[] nombres = new String[numJugadores];
+                int[] creditos = new int[numJugadores];
+                int[] cantidadesApostadas = new int[numJugadores];
+                // Pedir información de cada jugador
+                for (int i = 0; i < numJugadores; i++) {
+                    nombres[i] = obtenerInput("Introduzca el nombre del jugador " + (i + 1) + ":");
+                    creditos[i] = obtenerEnteroInput("Introduzca el crédito de " + nombres[i] + ":");
+                    respuestaSector = obtenerEnteroInput("1-Apostar Primer Sector (1-18)\n 2-Apostar Segundo Sector (19-36)");
+                    cantidadesApostadas[i] = obtenerEnteroInput("¿Cuanto quieres apostar?");
+                }
+
+                for (int i = 0; i < numJugadores; i++) {
+                    comprobacionPorSector(nombres[i], creditos[i],respuestaSector,cantidadesApostadas[i]);
+                }
+
+                 int respuesta = obtenerEnteroInput("¿Quieres seguir jugando por sectores? (1: Sí / 0: No)");
+
+                if (respuesta == 0) {
+                seguirJugando = false;
+                JOptionPane.showMessageDialog(null,"Gracias por jugar. ¡Hasta luego!" );
+            }
+                
+            }
+        }
 
     }
-
+    //metodo para saber la cantidad de judaores por partida
     public static int obtenerNumeroJugadores() {
         int numJugadores = 0;
         boolean entradaValida = false;
@@ -193,7 +227,7 @@ public class PrimeraVersionRuleta {
 
         return numJugadores;
     }
-
+//metodo para que no de error si no es un entero
     public static boolean esNumeroEntero(String str) {
         try {
             Integer.parseInt(str);
@@ -202,7 +236,7 @@ public class PrimeraVersionRuleta {
             return false;
         }
     }
-
+//metodo para que los inputs sean de manera visual mediante ventanas emergentes
     public static String obtenerInput(String mensaje) {
         return JOptionPane.showInputDialog(mensaje);
     }
@@ -224,13 +258,13 @@ public class PrimeraVersionRuleta {
 
         return resultado;
     }
-
+    //metodo para tomar un numero aleatorio para el sistema de ruleta
     public static int girarRuleta(int numerosTotalesRuleta) {
         Random random = new Random();
         return random.nextInt(numerosTotalesRuleta);
     }
-
-    public static void Jugador(String nombre, int creditos, int cantidadesApostadas, int[] numerosApostados, int numeroRuleta) {
+// metodo para mostrar el rusltado mediante apuestas por numeros
+    public static void comprobacionPorNumeros(String nombre, int creditos, int cantidadesApostadas, int[] numerosApostados, int numeroRuleta) {
          JOptionPane.showMessageDialog(null, "Hola " + nombre + ",\n" + "Crédito inicial: " + creditos
         + "\nNúmeros de apuestas: " + cantidadesApostadas + "\n Números apostados: " + java.util.Arrays.toString(numerosApostados)
         );
@@ -247,7 +281,7 @@ public class PrimeraVersionRuleta {
         if (gano) {
             JOptionPane.showMessageDialog(null,"¡Felicidades! Has ganado." );
             JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
-            // Ganas 36 veces la apuesta por cada número
+            // Ganas la apuesta *2
             creditos = creditos + (36 * cantidadesApostadas);
         } else {
             JOptionPane.showMessageDialog(null, "Lo siento, no has ganado esta vez.");
@@ -257,7 +291,7 @@ public class PrimeraVersionRuleta {
         }
         JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
     }
-
+// metodo para mostrar el rusltado mediante apuestas por color
     public static void comprobacionPorColor(String nombre, int creditos,int respuesta, int cantidadesApostadas ){
         int[] numerosNegros = {2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35};
         int[] numerosRojos = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36};
@@ -295,7 +329,7 @@ public class PrimeraVersionRuleta {
         if (premiado) {
             JOptionPane.showMessageDialog(null,"¡Felicidades! Has ganado." );
             JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
-            // Ganas 36 veces la apuesta por cada número
+            // Ganas la apuesta *2
             creditos = creditos + (cantidadesApostadas*2);
         } else {
             JOptionPane.showMessageDialog(null, "Lo siento, no has ganado esta vez.");
@@ -305,7 +339,7 @@ public class PrimeraVersionRuleta {
         }
         JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
     }
-
+    //metodo para comprobar si el sector seleccionado es correcto
     public static void comprobacionPorTipo(String nombre, int creditos,int respuesta, int cantidadesApostadas){
         int[] numerosPares = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36};
         int[] numerosImpares = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35};
@@ -343,7 +377,7 @@ public class PrimeraVersionRuleta {
         if (premiado) {
             JOptionPane.showMessageDialog(null,"¡Felicidades! Has ganado." );
             JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
-            // Ganas 36 veces la apuesta por cada número
+            // Ganas la apuesta *2
             creditos = creditos + (cantidadesApostadas*2);
         } else {
             JOptionPane.showMessageDialog(null, "Lo siento, no has ganado esta vez.");
@@ -353,5 +387,53 @@ public class PrimeraVersionRuleta {
         }
         JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
 
+    }
+// metodo para mostrar el rusltado mediante apuestas por sectores
+    public static void comprobacionPorSector(String nombre, int creditos,int respuesta, int cantidadesApostadas){
+        int[] numerosPrimerSector = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+        int[] numerosSegundoSector = {19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36};
+        int numerosTotalesRuleta = 37;
+        int numeroRuleta = girarRuleta(numerosTotalesRuleta);
+
+        boolean premiado = false;
+
+        String sector = "";
+        String primerSector = "Primer Sector";
+        String segundoSector = "Segundo Sector";
+
+        if (respuesta == 1){
+            for(int numero : numerosPrimerSector){
+                if (numero == numeroRuleta) {
+                    premiado = true;
+                    sector += primerSector;
+                    break;
+                }
+            }
+        } else{
+            for(int numero : numerosSegundoSector){
+                if (numero == numeroRuleta) {
+                    premiado = true;
+                    sector += segundoSector;
+                    break;
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Hola " + nombre + ",\n" + "Crédito inicial: " + creditos
+        + "\nSector Apostado: " + sector + "\n Cantidad apostada: " + cantidadesApostadas 
+        );
+
+        if (premiado) {
+            JOptionPane.showMessageDialog(null,"¡Felicidades! Has ganado." );
+            JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
+            // Ganas la apuesta *2
+            creditos = creditos + (cantidadesApostadas*2);
+        } else {
+            JOptionPane.showMessageDialog(null, "Lo siento, no has ganado esta vez.");
+            JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
+            // Pierdes el credito apostado
+            creditos = creditos - cantidadesApostadas;
+        }
+        JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
     }
 }
