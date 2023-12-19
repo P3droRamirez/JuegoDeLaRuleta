@@ -26,14 +26,14 @@ public class PrimeraVersionRuleta {
                 // Pedir información de cada jugador
                 for (int i = 0; i < numJugadores; i++) {
                     nombres[i] = obtenerInput("Introduzca el nombre del jugador " + (i + 1) + ":");
-                    creditos[i] = obtenerEnteroInput("Introduzca el crédito del jugador " + (i + 1) + ":");
-                    cantidadesApostadas[i] = obtenerEnteroInput("Introduzca la cantidad de números a los que desea apostar el jugador " + (i + 1) + ":");
+                    creditos[i] = obtenerEnteroInput("Introduzca el crédito de " + nombres[i] + ":");
+                    cantidadesApostadas[i] = obtenerEnteroInput("Introduzca la cantidad de números a los que desea apostar " + nombres[i] + ":");
 
                     // Crear un nuevo arreglo para almacenar los números apostados por el jugador
                     numerosApostados[i] = new int[cantidadesApostadas[i]];
 
                     for (int j = 0; j < cantidadesApostadas[i]; j++) {
-                        numerosApostados[i][j] = obtenerEnteroInput("Introduzca el número apostado por el jugador " + (i + 1) + " (apuesta " + (j + 1) + "):");
+                        numerosApostados[i][j] = obtenerEnteroInput("Introduzca el número apostado por  " + nombres[i] + " (apuesta " + (j + 1) + "):");
                     }
                 }
 
@@ -49,7 +49,7 @@ public class PrimeraVersionRuleta {
 
             if (respuesta == 0) {
                 seguirJugando = false;
-                System.out.println("Gracias por jugar. ¡Hasta luego!");
+                JOptionPane.showMessageDialog(null,"Gracias por jugar. ¡Hasta luego!" );
             }
         }
 
@@ -58,9 +58,6 @@ public class PrimeraVersionRuleta {
         for (int j = 0; j < numerosRuleta.length; j++) {
             numerosRuleta[j] = j;
         }
-
-        // Mostrar los números de la ruleta
-        JOptionPane.showMessageDialog(null, "Números de la ruleta: " + java.util.Arrays.toString(numerosRuleta));
     }
 
     public static int obtenerNumeroJugadores() {
@@ -68,7 +65,7 @@ public class PrimeraVersionRuleta {
         boolean entradaValida = false;
 
         while (!entradaValida) {
-            String numJugadoresStr = JOptionPane.showInputDialog("Hola, ¿cuántos jugadores vienen a j1ugar?");
+            String numJugadoresStr = JOptionPane.showInputDialog("Hola, ¿cuántos jugadores vienen a jugar?");
 
             if (esNumeroEntero(numJugadoresStr)) {
                 numJugadores = Integer.parseInt(numJugadoresStr);
@@ -123,8 +120,9 @@ public class PrimeraVersionRuleta {
     }
 
     public static void Jugador(String nombre, int creditos, int cantidadesApostadas, int[] numerosApostados, int numeroRuleta) {
-        System.out.println("Hola, soy el jugador " + nombre + ". Mi crédito es: " + creditos
-                + " y aposté por " + cantidadesApostadas + " número(s): " + java.util.Arrays.toString(numerosApostados) + ". El número en la ruleta es: " + numeroRuleta);
+         JOptionPane.showMessageDialog(null, "Hola " + nombre + ",\n" + "Crédito inicial: " + creditos
+        + "\nNúmeros de apuestas: " + cantidadesApostadas + "\n Números apostados: " + java.util.Arrays.toString(numerosApostados)
+        );
 
         // Comparar los números apostados con el resultado de la ruleta
         boolean gano = false;
@@ -136,15 +134,16 @@ public class PrimeraVersionRuleta {
         }
 
         if (gano) {
-            System.out.println("¡Felicidades! Has ganado.");
+            JOptionPane.showMessageDialog(null,"¡Felicidades! Has ganado." );
+            JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
             // Ganas 36 veces la apuesta por cada número
             creditos = creditos + (36 * cantidadesApostadas);
         } else {
-            System.out.println("Lo siento, no has ganado esta vez.");
+            JOptionPane.showMessageDialog(null, "Lo siento, no has ganado esta vez.");
+            JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
             // Pierdes 1 crédito por cada número apostado
             creditos = creditos - cantidadesApostadas;
         }
-        System.out.println("Tu nuevo saldo es: " + creditos);
-        System.out.println("--------");
+        JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
     }
 }
