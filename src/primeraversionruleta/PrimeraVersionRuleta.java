@@ -126,8 +126,42 @@ public class PrimeraVersionRuleta {
     }
 
     public static void apuestaTipoNumero(){
-        int numerosTotalesRuleta = 37;
-        int numeroRuleta = girarRuleta(numerosTotalesRuleta);
+        int respuestaTipoNumero = 0;
+        
+
+        boolean seguirJugando = true;
+
+        while (seguirJugando) {
+            int numJugadores = obtenerNumeroJugadores();
+
+            if (numJugadores <= 0 || numJugadores > 8) {
+                JOptionPane.showMessageDialog(null, "El programa se va a cerrar. Debe elegir un número positivo de jugadores.");
+                break;
+            } else {
+                String[] nombres = new String[numJugadores];
+                int[] creditos = new int[numJugadores];
+                int[] cantidadesApostadas = new int[numJugadores];
+                // Pedir información de cada jugador
+                for (int i = 0; i < numJugadores; i++) {
+                    nombres[i] = obtenerInput("Introduzca el nombre del jugador " + (i + 1) + ":");
+                    creditos[i] = obtenerEnteroInput("Introduzca el crédito de " + nombres[i] + ":");
+                    respuestaTipoNumero = obtenerEnteroInput("1-Apostar Par\n 2-Apostar Impar");
+                    cantidadesApostadas[i] = obtenerEnteroInput("¿Cuanto quieres apostar?");
+                }
+
+                for (int i = 0; i < numJugadores; i++) {
+                    comprobacionPorTipo(nombres[i], creditos[i],respuestaTipoNumero,cantidadesApostadas[i]);
+                }
+
+                 int respuesta = obtenerEnteroInput("¿Quieres seguir jugando por tipo de números? (1: Sí / 0: No)");
+
+                if (respuesta == 0) {
+                seguirJugando = false;
+                JOptionPane.showMessageDialog(null,"Gracias por jugar. ¡Hasta luego!" );
+            }
+                
+            }
+        }
 
     }
 
@@ -270,5 +304,54 @@ public class PrimeraVersionRuleta {
             creditos = creditos - cantidadesApostadas;
         }
         JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
+    }
+
+    public static void comprobacionPorTipo(String nombre, int creditos,int respuesta, int cantidadesApostadas){
+        int[] numerosPares = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36};
+        int[] numerosImpares = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35};
+        int numerosTotalesRuleta = 37;
+        int numeroRuleta = girarRuleta(numerosTotalesRuleta);
+
+        boolean premiado = false;
+
+        String tipo = "";
+        String par = "Par";
+        String impar = "Impar";
+
+        if (respuesta == 1){
+            for(int numero : numerosPares){
+                if (numero == numeroRuleta) {
+                    premiado = true;
+                    tipo += par;
+                    break;
+                }
+            }
+        } else{
+            for(int numero : numerosImpares){
+                if (numero == numeroRuleta) {
+                    premiado = true;
+                    tipo += impar;
+                    break;
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Hola " + nombre + ",\n" + "Crédito inicial: " + creditos
+        + "\nTipo Apostado: " + tipo + "\n Cantidad apostada: " + cantidadesApostadas 
+        );
+
+        if (premiado) {
+            JOptionPane.showMessageDialog(null,"¡Felicidades! Has ganado." );
+            JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
+            // Ganas 36 veces la apuesta por cada número
+            creditos = creditos + (cantidadesApostadas*2);
+        } else {
+            JOptionPane.showMessageDialog(null, "Lo siento, no has ganado esta vez.");
+            JOptionPane.showMessageDialog(null, "Número premiado: " + numeroRuleta);
+            // Pierdes el credito apostado
+            creditos = creditos - cantidadesApostadas;
+        }
+        JOptionPane.showMessageDialog(null,"Tu nuevo saldo es: " + creditos );
+
     }
 }

@@ -15,7 +15,7 @@ La ruleta gira y se obtiene un número aleatorio.
 Se evalúa si cada jugador ha ganado o perdido, y se ajustan los créditos en consecuencia.
 
 - Continuación del Juego:
-Después de una ronda, se pregunta a los jugadores si desean seguir jugando.(1: Sí / 0: No)")
+Después de una ronda, se pregunta a los jugadores si desean seguir jugando.(1: Sí / 0: No)"
 
 - Requisitos del Sistema
 Java JDK 8 o superior
