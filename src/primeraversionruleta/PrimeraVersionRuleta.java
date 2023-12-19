@@ -68,7 +68,7 @@ public class PrimeraVersionRuleta {
         boolean entradaValida = false;
 
         while (!entradaValida) {
-            String numJugadoresStr = JOptionPane.showInputDialog("Hola, ¿cuántos jugadores vienen a jugar?");
+            String numJugadoresStr = JOptionPane.showInputDialog("Hola, ¿cuántos jugadores vienen a j1ugar?");
 
             if (esNumeroEntero(numJugadoresStr)) {
                 numJugadores = Integer.parseInt(numJugadoresStr);
